@@ -1,0 +1,26 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  id-token: write
+  pull-requests: write
+  packages: read
+
+jobs:
+  release-please:
+    runs-on: ubuntu-24.04
+    outputs:
+      release_created: ${{ steps.rp.outputs.releases_created }}
+
+    steps:
+      - name: Release please
+        id: rp
+        uses: google-github-actions/release-please-action@a02a34c4d625f9be7cb89156071d8567266a2445 # v4.2.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          release-type: node
+          default-branch: main
